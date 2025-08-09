@@ -1,4 +1,5 @@
 # Scroll Magic - Modern Scroll Animations Showcase
+<img width="1891" height="916" alt="image" src="https://github.com/user-attachments/assets/25f00521-d200-49a0-bbd6-1461138d8676" />
 
 A comprehensive showcase of modern scroll-based animations and interactions built with React, Next.js, TypeScript, and Tailwind CSS.
 
