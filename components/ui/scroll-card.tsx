@@ -67,14 +67,14 @@ const AnimatedCard = ({ card, index }: { card: ArticleCardData; index: number })
         initial={{ rotateY: 15 }}
         animate={{ rotateY: 0 }}
         transition={{ duration: 0.8, delay: index * 0.1 }}
-        className={`h-72 w-[30rem] rounded-lg ${card.rotation} p-4 grid place-content-center gap-4 text-black shadow-2xl`}
+        className={`h-80 md:h-96 w-full max-w-2xl md:max-w-3xl lg:max-w-4xl rounded-lg ${card.rotation} p-6 md:p-8 grid place-content-center gap-6 text-black shadow-2xl`}
         style={{ backgroundColor: card.color }}
       >
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
-          className='text-2xl font-semibold'
+          className='text-xl md:text-2xl font-semibold text-center'
         >
           {card.title}
         </motion.h1>
@@ -82,7 +82,7 @@ const AnimatedCard = ({ card, index }: { card: ArticleCardData; index: number })
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: index * 0.1 + 0.3 }}
-          className='text-sm leading-relaxed'
+          className='text-sm md:text-base leading-relaxed text-center'
         >
           {card.description}
         </motion.p>
@@ -93,7 +93,7 @@ const AnimatedCard = ({ card, index }: { card: ArticleCardData; index: number })
           whileHover={{ scale: 1.05, backgroundColor: '#1f2937' }}
           whileTap={{ scale: 0.95 }}
           href={card.link}
-          className='w-fit bg-black p-3 rounded-md cursor-pointer text-white hover:bg-gray-800 transition-colors'
+          className='w-fit bg-black p-3 rounded-md cursor-pointer text-white hover:bg-gray-800 transition-colors text-center'
         >
           Learn More
         </motion.a>
@@ -105,47 +105,53 @@ const AnimatedCard = ({ card, index }: { card: ArticleCardData; index: number })
 const ScrollCardComponent = forwardRef<HTMLElement>((props, ref) => {
   return (
     <ReactLenis root>
-      <main className='bg-black' ref={ref}>
-        <div className='wrapper'>
-          <section className='text-white h-screen w-full bg-slate-950 grid place-content-center sticky top-0'>
-            <div className='absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]'></div>
+      <main ref={ref} className="min-h-screen">
+        {/* Hero Section */}
+        <section className='text-white h-screen w-full grid place-content-center sticky top-0'>
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className='text-4xl md:text-6xl lg:text-7xl px-4 font-semibold text-center tracking-tight leading-[120%]'
+          >
+            Scroll-Based Card Stack <br /> Animations
+          </motion.h1>
+        </section>
 
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className='2xl:text-7xl text-5xl px-8 font-semibold text-center tracking-tight leading-[120%]'
-            >
-              Scroll-Based Card Stack <br /> Animations 🎯
-            </motion.h1>
-          </section>
-        </div>
-
-        <section className='text-white w-full bg-slate-950'>
-          <div className='flex justify-between px-16'>
-            <div className='grid gap-2'>
+        {/* Cards Section */}
+        <section className='text-white w-full min-h-screen'>
+          <div className='flex justify-center px-4 lg:px-8'>
+            <div className='grid gap-4 lg:gap-6 w-full max-w-4xl'>
               {articleCardsData.map((card, i) => (
                 <AnimatedCard key={i} card={card} index={i} />
               ))}
             </div>
-            <div className='sticky top-0 h-screen grid place-content-center'>
-              <motion.h1 
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className='text-4xl px-8 font-medium text-center tracking-tight leading-[120%]'
-              >
-                Interactive <br /> Card Stack 🎨
-              </motion.h1>
-            </div>
           </div>
         </section>
 
-        <footer className='group bg-slate-950 '>
-          <h1 className='text-[16vw] translate-y-20 leading-[100%] uppercase font-semibold text-center bg-gradient-to-r from-gray-400 to-gray-800 bg-clip-text text-transparent transition-all ease-linear'>
+        {/* Footer */}
+        <footer className='min-h-screen flex items-center justify-center relative'>
+          <motion.h1 
+            className='text-[8vw] md:text-[10vw] lg:text-[12vw] leading-[100%] uppercase font-semibold text-center bg-gradient-to-r from-gray-400 to-gray-800 bg-clip-text text-transparent transition-all ease-linear cursor-pointer relative z-10'
+            whileHover={{
+              scale: 1.05,
+              filter: "brightness(1.2)",
+            }}
+            animate={{
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              backgroundSize: "200% 200%",
+              backgroundImage: "linear-gradient(45deg, #9ca3af, #6b7280, #374151, #6b7280, #9ca3af)",
+            }}
+          >
             scroll-stack
-          </h1>
-          <div className='bg-black h-40 relative z-10 grid place-content-center text-2xl rounded-tr-full rounded-tl-full text-white'></div>
+          </motion.h1>
         </footer>
       </main>
     </ReactLenis>

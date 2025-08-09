@@ -53,10 +53,37 @@ export default function GsapFrameAnimation({
     const img = loadedImages[index]
     if (!canvas || !ctx || !img) return
 
-    canvas.width = img.width
-    canvas.height = img.height
+    // Set canvas size to match container
+    const container = containerRef.current
+    if (container) {
+      const rect = container.getBoundingClientRect()
+      canvas.width = rect.width
+      canvas.height = rect.height
+    }
+
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.drawImage(img, 0, 0)
+    
+    // Calculate aspect ratio to fit image within canvas
+    const imgAspect = img.width / img.height
+    const canvasAspect = canvas.width / canvas.height
+    
+    let drawWidth, drawHeight, offsetX, offsetY
+    
+    if (imgAspect > canvasAspect) {
+      // Image is wider than canvas
+      drawWidth = canvas.width
+      drawHeight = canvas.width / imgAspect
+      offsetX = 0
+      offsetY = (canvas.height - drawHeight) / 2
+    } else {
+      // Image is taller than canvas
+      drawHeight = canvas.height
+      drawWidth = canvas.height * imgAspect
+      offsetX = (canvas.width - drawWidth) / 2
+      offsetY = 0
+    }
+    
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
   }
 
   useEffect(() => {
@@ -72,11 +99,11 @@ export default function GsapFrameAnimation({
       ease: 'none',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top top',
-        end: '+=2000',
-        scrub: true,
-        pin: true,
-        anticipatePin: 1
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        pin: false,
+        anticipatePin: 0
       },
       onUpdate: () => {
         if (frameState.frame !== currentFrame.current) {
@@ -86,24 +113,32 @@ export default function GsapFrameAnimation({
       }
     })
 
+    // Handle resize events
+    const handleResize = () => {
+      draw(currentFrame.current)
+    }
+
+    window.addEventListener('resize', handleResize)
+
     // Properly get and kill the ScrollTrigger instance
     const stInstance = scrollTween.scrollTrigger
 
     return () => {
       scrollTween.kill()
       if (stInstance) stInstance.kill()
+      window.removeEventListener('resize', handleResize)
     }
   }, [loadedImages, totalFrames, startFrame])
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-screen flex items-center justify-center ${className}`}
+      className={`relative w-full h-full flex items-center justify-center overflow-hidden ${className}`}
     >
       {loadedImages.length === 0 ? (
         <div className="text-white text-center">Loading frames…</div>
       ) : (
-        <canvas ref={canvasRef} className="w-full h-auto max-h-screen" />
+        <canvas ref={canvasRef} className="w-full h-full object-contain max-w-full max-h-full" />
       )}
     </div>
   )

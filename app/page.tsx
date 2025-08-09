@@ -13,7 +13,6 @@ import {
   ProcessCardBody,
   ProcessCardTitle
 } from '@/components/ui/process-timeline'
-import SmoothScrollHero from '@/components/ui/smooth-scroll-hero'
 import { Marquee } from '@/components/ui/3d-testimonials'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
@@ -111,29 +110,40 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="hero"
-        className="min-h-screen bg-gradient-to-br from-slate-900 via-black-300 to-slate-200 flex items-center justify-center relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20">
-          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="https://pub-7e222c0b5c674a2283e50e5ceac3de9b.r2.dev/18069232-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
+        
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 bg-gradient-to-r from-black-400 via-white-500 to-pink-500 bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 bg-gradient-to-r from-white via-white to-gray-300 bg-clip-text text-transparent">
             Portfolio
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-4xl mx-auto">
             I've put together a showcase of just a few of the modern scroll-based animations and interactions that I enjoy using. Discover smooth transitions, parallax effects,
             and engaging user experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#tilted-scroll"
-              className="px-8 py-4 bg-gradient-to-r from-white-500 to-black-600 text-white rounded-lg font-semibold hover:from-gray-600 hover:to-white-700 transition-all duration-300 transform hover:scale-105"
+              className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-all duration-300 transform hover:scale-105 border border-white/30"
             >
               Explore Animations
             </a>
             <a
               href="#horizontal-carousel"
-              className="px-8 py-4 border-2 border-white-500 text-white-400 rounded-lg font-semibold hover:bg-purple-black hover:text-white transition-all duration-300"
+              className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-black transition-all duration-300"
             >
               View Components
             </a>
@@ -155,9 +165,9 @@ export default function Home() {
       {/* Scroll Expansion Hero */}
       <section id="scroll-expansion" className="min-h-screen">
         <ScrollExpandMedia
-          mediaType="image"
-          mediaSrc="https://images.unsplash.com/photo-1682687982501-1e58ab814714?q=80&w=1280&auto=format&fit=crop"
-          bgImageSrc="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1920&auto=format&fit=crop"
+          mediaType="video"
+          mediaSrc="https://pub-7e222c0b5c674a2283e50e5ceac3de9b.r2.dev/18069803-uhd_1440_2560_24fps.mp4"
+          bgImageSrc="https://pub-7e222c0b5c674a2283e50e5ceac3de9b.r2.dev/18069166-uhd_2560_1440_24fps.mp4"
           title="Scroll Expansion"
           date="Interactive Media"
           scrollToExpand="Scroll to Expand"
@@ -189,13 +199,14 @@ export default function Home() {
             </div>
           }
         >
-          <Image
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1400&h=800&fit=crop"
-            alt="Dashboard preview"
-            width={1400}
-            height={800}
-            className="mx-auto rounded-2xl object-cover h-full object-left-top"
-          />
+          <div className="w-full h-full flex items-center justify-center">
+            <GsapFrameAnimation
+              images={cloudflareFrames}
+              className="w-full h-full"
+              totalFrames={360}
+              startFrame={0}
+            />
+          </div>
         </ContainerScroll>
       </section>
 
@@ -272,23 +283,6 @@ export default function Home() {
         </ProcessContainer>
       </section>
 
-      {/* Smooth Scroll Hero */}
-      <section id="smooth-scroll-hero">
-        <SmoothScrollHero
-          scrollHeight={1200}
-          desktopImage="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1920&q=80"
-          mobileImage="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=768&q=80"
-        />
-        <div className="bg-background py-20">
-          <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">Smooth Scroll Effects</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Need to create stunning reveal effects as you scroll? This is perfect for hero sections and feature showcases.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* 3D Testimonials */}
       <section id="testimonials" className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50 dark:from-purple-900 dark:to-pink-900 py-20">
         <div className="container mx-auto px-6 text-center mb-12">
@@ -336,16 +330,6 @@ export default function Home() {
       {/* Scroll Card Stack */}
       <section id="scroll-cards">
         <ScrollCardComponent />
-      </section>
-
-      {/* GSAP Frame Animation */}
-      <section id="gsap-frame-animation" className="min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 py-20">
-        <GsapFrameAnimation
-          images={cloudflareFrames}
-          className="bg-black"
-          totalFrames={360}
-          startFrame={0}
-        />
       </section>
 
       {/* Horizontal Scroll Carousel */}

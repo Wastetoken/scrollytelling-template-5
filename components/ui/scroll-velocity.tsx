@@ -62,12 +62,19 @@ const ScrollVelocity = React.forwardRef<HTMLDivElement, ScrollVelocityProps>(
         >
           {typeof children === "string" ? (
             <>
-              {Array.from({ length: 5 }).map((_, idx) => (
+              {Array.from({ length: 10 }).map((_, idx) => (
                 <span key={idx}>{children}</span>
               ))}
             </>
           ) : (
-            children
+            <>
+              {/* Duplicate children to create infinite effect */}
+              {children}
+              {children}
+              {children}
+              {children}
+              {children}
+            </>
           )}
         </motion.div>
       </div>
